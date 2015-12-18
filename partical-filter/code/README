@@ -1,0 +1,58 @@
+Start with marking = 0 (the back marking of a pigeon (or "pig" for short)).
+And pigMode = 1 (the textured "grey" pig).
+
+To run
+
+1) grabHOG.m 
+  Grabs one HOG response for each pigeon (pig 1 and 2, pig 3 is
+  visually identical to pig 1).  
+  At the end of the code this script saves hog1*.mat, hog2*.mat 
+  in ./back or ./head/
+
+2) trainHOG.m
+
+   Run for pOn, pOff (i.e. pOn = false), for pig 1 and 2 (four cases).
+   For pOn (true):
+      We are looking for POSITIVE training cases.
+      The program asks you to mouse in the center of
+      the marking in a randomly chosen image, and also 
+      to indicate the orientation of the marking by mousing
+      in a point along the axis of the body, in front of the
+      marking.  (For the head, mark the center of the head with
+      the first point, and the beak with the second.)
+   For pOff (pOn false):
+      We are looking for NEGATIVE training cases.
+      The program asks you to mouse in a region (top left corner
+      of a box followed by the bottom right corner).  It will 
+      uniformly sample a rotated  version of that region.
+      Set the orientation by marking two points (tail then head
+      of a vector) which is to be rotated to point horizontally
+      to the right.  You should choose any orientation, so long
+      as the true target does not appear at that orientation.
+   This saves results in ./back or ./head directory in files
+   respHistPig#mark#[On/Off].mat
+
+3) fitLogOdds
+   Adjust the logistic parameters lambda, mu and maybe scl to
+   fit the rise in log(pOn/pOff).  This modifies the hog*.mat
+   files to add the parameter settings lambda, mu and scl.
+   You need to reset these parameters and rerun this script
+   until you are happy with the fit(s).
+
+4) tryHOG
+   Try out any of the HOG models on moused in image patches
+   which are rotated to a moused in direction.  You need to change
+   pigMode and matching to set which pigeon, and which marking you
+   wish to test.   You should often see that the target at the
+   right orientation is the biggest response in the patch.  
+
+5) Go nuts.  Write and run partFilt.  This uses the mat files
+   in ./back or ./head (when marking = 0 or 1, respectively).
+   BEWARE: partFilt writes out its results in results/pig#mark#frm#.mat
+   If you do questions 3 or 4 you should either change these output
+   file names, or make sure you have completed your write up for
+   question 2 BEFORE you overwrite these files.
+
+6) Can run showResults (pigMode = 1 or 2, marking = 0 or 1) to
+   display the results and write out jpeg images of results.  These
+   jpegs are useful for browsing later, to watch for different behaviours.
